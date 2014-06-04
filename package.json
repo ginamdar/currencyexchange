@@ -16,6 +16,9 @@
     "errorhandler": "^1.0.1",
     "http": "0.0.0",
     "mathjs": "^0.22.0",
-    "moment": "^2.6.0"
+    "moment": "^2.6.0",
+    "mongoskin": "^1.4.4",
+    "express-session": "^1.2.1",
+    "csrf": "0.0.3"
   }
 }
