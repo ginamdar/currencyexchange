@@ -59,19 +59,21 @@ if (app.get('env') === 'development') {
 }
 
 app.param('customer_id', function(req, res, next, customerId) {
-  console.log("Middleware customerId called " + customerId);
-  req.db.rates.findById(customerId, function(error, customerId){
-    if (error) return next(error);
-    //if (!customerId) return next(new Error('customerId is not found.'));
-	if (!customerId) {
-		console.log('No CustomerId found');
-		return next();
-	}
-    req.customerId = customerId;
-	console.log('req.customerId: ' + req.customerId);
-    return next();
-  });
+	console.log("Middleware customerId called " + customerId);  
+	req.db.rates.find({
+		//settlement_time: { $lt: new Date()},
+		name:customerId
+	}).toArray(function(error, customers){
+		if (error) return next(error);
+		for (var i = 0; i < customers.length; i++){
+			console.log("aCustomer:" + customers[i].name +  ' |' + customers[i].from + ' |' + 
+				customers[i].to + ' |' + customers[i].settlement_time);
+		}
+		req.customers = customers || [];
+	});
+	return next();
 });
+
 
 var findRateAndSave = [exchange.exchangerate, exchangeDB.add];
 app.get('/currencyexchange/:from/:to/:amount/:customer_id', findRateAndSave);
