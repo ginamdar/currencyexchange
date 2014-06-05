@@ -16,6 +16,7 @@ var responseJson = {
 };
 			
 exports.exchangerate = function(req, resp, next){
+	if (req.rate) return next();
 	var params = req.params.from + '&' + req.params.to;
 	var options = {
 		host: 'rate-exchange.appspot.com',
